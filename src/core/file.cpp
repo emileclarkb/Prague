@@ -1,7 +1,9 @@
+#include "file.h"
+
 #include <iostream>
 #include <fstream>
-#include <string>
-using namespace std;
+// #include <string>
+// using namespace std;
 
 string fileRead(const char* fname) {
     string contents;
