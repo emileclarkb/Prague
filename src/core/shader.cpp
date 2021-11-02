@@ -1,16 +1,26 @@
 #include "shader.h"
+#include "file.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-#include "string.h"
+#include <string>
+#include <vector>
 using namespace std;
 
 // shader construction
-shader::shader(const char* V, const char* S) {
-    vSource = V;
-    fSource = S;
+shader::shader(const char* V, const char* F) {
+    // vertex and fragment strings
+    string vs = fileRead(V);
+    string fs = fileRead(F);
+    // stack overflow be like:
+    vector<char> vChars(vs.c_str(), vs.c_str() + vs.size() + 1u);
+    vector<char> fChars(fs.c_str(), fs.c_str() + fs.size() + 1u);
+
+    // set source
+    vSource = &vChars[0];
+    fSource = &fChars[0];
 
     // construct shaders
     newShader(vSource, 1);

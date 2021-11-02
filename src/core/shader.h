@@ -9,16 +9,18 @@ class shader {
         ~shader();
 
         void link();
+
+        // shader source
+        // hey
+        char* vSource;
+        // Michael here
+        char* fSource;
     private:
         void newShader(const char*, bool);
     protected:
         // verification message storage
         int success;
         char info[512];
-
-        // shader source
-        const char* vSource;
-        const char* fSource;
 
         // shader program
         unsigned int program;
