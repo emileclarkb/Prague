@@ -11,7 +11,7 @@ link = ['glfw3', 'opengl32', 'gdi32']
 include = []
 
 # file blacklist
-blacklist = ['init.cpp', 'shader0.cpp']
+blacklist = ['render-old.cpp']
 
 # directory marching
 def march(path):
@@ -34,6 +34,7 @@ def main():
     files = march(cwd)
     files = [f.replace(cwd+'\\', '') for f in files]
 
+    # -std=c++11
     cmd = 'gcc' if gcc else 'g++'
     cmd = f'{cmd} {" ".join(files)} -o {out} ' + \
             ' '.join(f'-l{l}' for l in link) + \
