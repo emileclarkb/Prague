@@ -1,41 +1,46 @@
 #ifndef INIT_H
 #define INIT_H
 
+#include <string>
+using namespace std;
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-GLFWwindow* init(const char*, const uint16_t, const uint16_t);
-
-
 class renderer {
     public:
-        renderer(char*, uint16_t, uint16_t);
+        renderer(const char*, uint16_t, uint16_t);
         ~renderer();
 
-        char* title;
+        // const char* title;
         uint16_t width;
         uint16_t height;
         bool status;
 
         // set framebuffer size callback
-        void sizeCallback(void&);
+        void sizeCallback(void (*) (GLFWwindow*, int, int));
 
         void run();
         // event functions
-        void awake();
-        void update();
+        void (*awake)(renderer*);
+        void (*update)(renderer*);
 
         // wrapper
         void close();
         bool getInput(unsigned int, unsigned int);
 
-        void setVertices(float vertices[]);
-    private:
+        void setVertices(float vertices[], uint8_t);
+
+        // PRIVATE
         // vertex management
         unsigned int VAO;
         unsigned int VBO;
-    protected:
+
+        // PROTECTED
         GLFWwindow* window;
+    private:
+
+    protected:
 };
 
 #endif

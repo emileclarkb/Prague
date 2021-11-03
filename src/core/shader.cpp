@@ -19,14 +19,30 @@ shader::shader(const char* V, const char* F) {
     vector<char> fChars(fs.c_str(), fs.c_str() + fs.size() + 1u);
 
     // set source
-    vSource = &vChars[0];
+    vSource = &(vChars[0]);
     fSource = &fChars[0];
 
-    // construct shaders
-    newShader(vSource, 1);
-    newShader(fSource, 0);
+    // setup shader program
+    program = glCreateProgram();
 
-    link();
+    // construct shaders
+    vShader = newShader(vSource, 1);
+    fShader = newShader(fSource, 0);
+
+    glLinkProgram(program);
+    // verify linking process
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(program, 512, NULL, info);
+        cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info << endl;
+    }
+    glDeleteShader(vShader);
+    glDeleteShader(fShader);
+}
+
+// use shader program
+void shader::use() {
+    glUseProgram(program);
 }
 
 // de-allocate resources
@@ -35,7 +51,7 @@ shader::~shader() {
 }
 
 // new shader
-void shader::newShader(const char* source, bool type) {
+unsigned int shader::newShader(const char* source, bool type) {
     // GL_FRAGMENT_SHADER == 35632 , GL_VERTEX_SHADER == 35633
     // create shader reference
     unsigned int s = glCreateShader(GL_FRAGMENT_SHADER + type);
@@ -44,7 +60,6 @@ void shader::newShader(const char* source, bool type) {
 
     // verify compilation process
     glGetShaderiv(s, GL_COMPILE_STATUS, &success);
-
     // compilation failed
     if (!success)
     {
@@ -54,18 +69,6 @@ void shader::newShader(const char* source, bool type) {
 
     // link shaders
     glAttachShader(program, s);
-    // clean
-    glDeleteShader(s);
-}
 
-// link program
-void shader::link() {
-    glLinkProgram(program);
-
-    // verify linking process
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(program, 512, NULL, info);
-        cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info << endl;
-    }
+    return s;
 }

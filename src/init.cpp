@@ -3,42 +3,10 @@
 #include <iostream>
 using namespace std;
 
-// initialize glfw and glad
-GLFWwindow* init(const uint16_t width, const uint16_t height, const char* title) {
-    // glfw: initialize and configure
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    #ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    #endif
-
-    // glfw window creation
-    GLFWwindow* window = glfwCreateWindow(width, height, title, NULL, NULL);
-    if (window == NULL)
-    {
-        cout << "Failed to create GLFW window" << endl;
-        glfwTerminate();
-        //return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-    // glad: load all OpenGL function pointers
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        cout << "Failed to initialize GLAD" << endl;
-        //return -1;
-    }
-
-    return window,
-}
-
-renderer::renderer(const char* t, const uint16_t w, const uint16_t h) {
+renderer::renderer(const char* t, uint16_t w, uint16_t h) {
     // initilaize properties
-    title = *t;
+    // title = t;
     width = w;
     height = h;
     status = 0;
@@ -55,14 +23,13 @@ renderer::renderer(const char* t, const uint16_t w, const uint16_t h) {
     #endif
 
     // glfw window creation
-    window = glfwCreateWindow(width, height, title, NULL, NULL);
+    window = glfwCreateWindow(width, height, t, NULL, NULL);
     if (window == NULL) {
         cout << "Failed to create GLFW window" << endl;
         glfwTerminate();
         status = 1;
     }
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -80,13 +47,14 @@ renderer::~renderer() {
     glfwTerminate();
 }
 
-void renderer::sizeCallback(void& function) {
+// window size adjusted
+void renderer::sizeCallback(void (*function) (GLFWwindow* window, int width, int height)) {
     glfwSetFramebufferSizeCallback(window, function);
 }
 
 // main loop
 void renderer::run() {
-    awake();
+    awake(this);
     while (!glfwWindowShouldClose(window)) {
         // render
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -101,7 +69,7 @@ void renderer::run() {
         glfwPollEvents();
 
         // run update
-        update();
+        update(this);
     }
 }
 
@@ -111,19 +79,19 @@ void renderer::close() {
 }
 
 // get glfw input
-bool getInput(const unsigned int key, const unsigned int state) {
+bool renderer::getInput(const unsigned int key, const unsigned int state) {
     return glfwGetKey(window, key) == state;
 }
 
 // set vertex arrays and buffers
-void renderer::setVertices(float vertices[]) {
+void renderer::setVertices(float vertices[], uint8_t size) {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
