@@ -7,8 +7,7 @@ import sys
 # 694 3/11/2021 7:08 PM AEST
 
 # ignore
-#blacklist = ['glew32.dll', 'glew32.lib', 'empty.exe']
-blacklist = []
+blacklist = ['glad.c']
 exBlacklist = ['dll', 'lib', 'exe'] #extension blacklist
 
 # get lines in directory
@@ -32,7 +31,7 @@ def lines(path):
     return s
 
 def main():
-    s = lines('src') + lines('old') + lines('notes')
+    s = lines('src')
     print(s)
 
 if __name__ == '__main__':

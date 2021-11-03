@@ -38,7 +38,7 @@ def main():
     cmd = f'{cmd} {" ".join(files)} -o {out} ' + \
             ' '.join(f'-l{l}' for l in link) + \
             ' '.join(f'-I{i}' for i in include)
-    print(cmd)
+
     os.system(cmd)
     os.system(out)
 
