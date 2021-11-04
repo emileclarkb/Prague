@@ -36,13 +36,16 @@ renderer::renderer(const char* t, uint16_t w, uint16_t h) {
         cout << "Failed to initialize GLAD" << endl;
         status = 1;
     }
+
+    glGenVertexArrays(2, VAO);
+    glGenBuffers(2, VBO);
 }
 
 // terminate program
 renderer::~renderer() {
     // de-allocate resources
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(2, VAO);
+    glDeleteBuffers(1, VBO);
     // finish termination step
     glfwTerminate();
 }
@@ -61,7 +64,9 @@ void renderer::run() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // render the triangle
-        glBindVertexArray(VAO);
+        glBindVertexArray(VAO[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(VAO[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -84,19 +89,14 @@ bool renderer::getInput(const unsigned int key, const unsigned int state) {
 }
 
 // set vertex arrays and buffers
-void renderer::setVertices(float vertices[], uint8_t size) {
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
+void renderer::setVertices(float vertices[], uint8_t size, uint8_t i) {
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
+    glBindVertexArray(VAO[i]);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[i]);
     glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, !i * 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 }

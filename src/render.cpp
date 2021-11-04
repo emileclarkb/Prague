@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <ostream>
+#include <cmath>
 using namespace std;
 
 
@@ -22,11 +23,33 @@ float vertices[] = {
      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
 };
 
+float screen1[] = {
+    // positions
+     1.0f, -1.0f, 0.0f,
+    -1.0f, -1.0f, 0.0f,
+    -1.0f,  1.0f, 0.0f
+};
+float screen2[] = {
+    // positions
+     1.0f, -1.0f, 0.0f,
+    -1.0f,  1.0f, 0.0f,
+     1.0f,  1.0f, 0.0f
+};
+
 
 
 void awake(renderer* r) {}
 // render loop
 void update(renderer* r) {
+    // get uniform values
+    float time = glfwGetTime();
+    // get uniform locations
+    int timeLocation = glGetUniformLocation(r->shader->program, "time");
+    int resLocation = glGetUniformLocation(r->shader->program, "resolution");
+    // set uniform values
+    glUniform1f(timeLocation, time);
+    glUniform2f(resLocation, SCR_WIDTH, SCR_HEIGHT);
+
     if (r->getInput(GLFW_KEY_ESCAPE, GLFW_PRESS)) {
         r->close();
     }
@@ -49,7 +72,9 @@ int main(int argc, char *argv[])
     }
     // create shader program
     shader s = shader("core/shaders/vertex.vs", "core/shaders/fragment.fs");
-    r.setVertices(vertices, sizeof(vertices));
+    r.shader = &s;
+    r.setVertices(screen1, sizeof(screen1), 0);
+    r.setVertices(screen2, sizeof(screen2), 1);
     s.use();
 
     // set renderer attributes

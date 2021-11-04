@@ -1,6 +1,8 @@
 #ifndef INIT_H
 #define INIT_H
 
+#include "core/shader.h"
+
 #include <string>
 using namespace std;
 
@@ -29,12 +31,14 @@ class renderer {
         void close();
         bool getInput(unsigned int, unsigned int);
 
-        void setVertices(float vertices[], uint8_t);
+        void setVertices(float vertices[], uint8_t, uint8_t);
+
+        shader* shader;
 
         // PRIVATE
         // vertex management
-        unsigned int VAO;
-        unsigned int VBO;
+        unsigned int VAO[2];
+        unsigned int VBO[2];
 
         // PROTECTED
         GLFWwindow* window;
