@@ -7,7 +7,7 @@ gcc = False
 out = 'render'
 extensions = ['c', 'cpp']
 link = ['glfw3', 'opengl32', 'gdi32']
-include = []
+include = [] #include base directory?
 
 # file blacklist
 blacklist = ['render-old.cpp']
