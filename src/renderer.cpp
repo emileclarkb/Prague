@@ -1,10 +1,10 @@
-#include "init.h"
+#include "renderer.h"
 
 #include <iostream>
 using namespace std;
 
 
-renderer::renderer(const char* t, uint16_t w, uint16_t h) {
+Renderer::Renderer(const char* t, uint16_t w, uint16_t h) {
     // initilaize properties
     // title = t;
     width = w;
@@ -42,7 +42,7 @@ renderer::renderer(const char* t, uint16_t w, uint16_t h) {
 }
 
 // terminate program
-renderer::~renderer() {
+Renderer::~Renderer() {
     // de-allocate resources
     glDeleteVertexArrays(2, VAO);
     glDeleteBuffers(1, VBO);
@@ -51,12 +51,12 @@ renderer::~renderer() {
 }
 
 // window size adjusted
-void renderer::sizeCallback(void (*function) (GLFWwindow* window, int width, int height)) {
+void Renderer::sizeCallback(void (*function) (GLFWwindow* window, int width, int height)) {
     glfwSetFramebufferSizeCallback(window, function);
 }
 
 // main loop
-void renderer::run() {
+void Renderer::run() {
     awake(this);
     while (!glfwWindowShouldClose(window)) {
         // render
@@ -79,17 +79,17 @@ void renderer::run() {
 }
 
 // close window
-void renderer::close() {
+void Renderer::close() {
     glfwSetWindowShouldClose(window, true);
 }
 
 // get glfw input
-bool renderer::getInput(const unsigned int key, const unsigned int state) {
+bool Renderer::getInput(const unsigned int key, const unsigned int state) {
     return glfwGetKey(window, key) == state;
 }
 
 // set vertex arrays and buffers
-void renderer::setVertices(float vertices[], uint8_t size, uint8_t i) {
+void Renderer::setVertices(float vertices[], uint8_t size, uint8_t i) {
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO[i]);
 

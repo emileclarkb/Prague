@@ -9,10 +9,10 @@ using namespace std;
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class renderer {
+class Renderer {
     public:
-        renderer(const char*, uint16_t, uint16_t);
-        ~renderer();
+        Renderer(const char*, uint16_t, uint16_t);
+        ~Renderer();
 
         // const char* title;
         uint16_t width;
@@ -24,8 +24,8 @@ class renderer {
 
         void run();
         // event functions
-        void (*awake)(renderer*);
-        void (*update)(renderer*);
+        void (*awake)(Renderer*);
+        void (*update)(Renderer*);
 
         // wrapper
         void close();
@@ -33,7 +33,7 @@ class renderer {
 
         void setVertices(float vertices[], uint8_t, uint8_t);
 
-        shader* shader;
+        Shader* shader;
 
         // PRIVATE
         // vertex management
