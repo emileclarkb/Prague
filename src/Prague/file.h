@@ -2,9 +2,14 @@
 #define FILE_H
 
 #include <string>
-using namespace std;
+#include <vector>
 
-string fileRead(const char*);
-uint8_t fileSize(const char*);
+std::string readFile(const char*);
+int fileSize(const char*);
+
+std::vector<std::string>* listDir(std::string);
+unsigned int dirSize(std::string);
+
+bool isFile(std::string);
 
 #endif
