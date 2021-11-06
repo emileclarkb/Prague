@@ -10,7 +10,7 @@
 using namespace std;
 
 // shader construction
-shader::shader(const char* V, const char* F) {
+Shader::Shader(const char* V, const char* F) {
     // vertex and fragment strings
     string vs = fileRead(V);
     string fs = fileRead(F);
@@ -41,17 +41,17 @@ shader::shader(const char* V, const char* F) {
 }
 
 // use shader program
-void shader::use() {
+void Shader::use() {
     glUseProgram(program);
 }
 
 // de-allocate resources
-shader::~shader() {
+Shader::~Shader() {
     glDeleteProgram(program);
 }
 
 // new shader
-unsigned int shader::newShader(const char* source, bool type) {
+unsigned int Shader::newShader(const char* source, bool type) {
     // GL_FRAGMENT_SHADER == 35632 , GL_VERTEX_SHADER == 35633
     // create shader reference
     unsigned int s = glCreateShader(GL_FRAGMENT_SHADER + type);

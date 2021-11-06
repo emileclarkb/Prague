@@ -1,12 +1,12 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-class shader {
+class Shader {
     public:
         // shader construction
-        shader(const char*, const char*);
+        Shader(const char*, const char*);
         // de-allocate resources
-        ~shader();
+        ~Shader();
 
         // use shader program
         void use();

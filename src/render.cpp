@@ -1,4 +1,4 @@
-#include "init.h"
+#include "renderer.h"
 #include "core/shader.h"
 
 #include <glad/glad.h>
@@ -38,9 +38,9 @@ float screen2[] = {
 
 
 
-void awake(renderer* r) {}
+void awake(Renderer* r) {}
 // render loop
-void update(renderer* r) {
+void update(Renderer* r) {
     // get uniform values
     float time = glfwGetTime();
     // get uniform locations
@@ -65,13 +65,13 @@ void sizeCallback(GLFWwindow* window, int width, int height)
 int main(int argc, char *argv[])
 {
     // initialize renderer
-    renderer r = renderer("Renderer", SCR_WIDTH, SCR_HEIGHT);
+    Renderer r = Renderer("Renderer", SCR_WIDTH, SCR_HEIGHT);
     // error occurred
     if (r.status) {
         return -1;
     }
     // create shader program
-    shader s = shader("core/shaders/vertex.vs", "core/shaders/fragment.fs");
+    Shader s = Shader("core/shaders/vertex.vs", "core/shaders/fragment.fs");
     r.shader = &s;
     r.setVertices(screen1, sizeof(screen1), 0);
     r.setVertices(screen2, sizeof(screen2), 1);
