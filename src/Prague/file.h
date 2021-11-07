@@ -12,4 +12,8 @@ unsigned int dirSize(std::string);
 
 bool isFile(std::string);
 
+std::string fileExt(std::string&);
+std::string fileName(std::string&);
+
+
 #endif

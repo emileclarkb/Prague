@@ -1,12 +1,12 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "core/shader.h"
+#include "Prague/shader.h"
 
 #include <string>
 using namespace std;
 
-#include <glad/glad.h>
+#include <glad/glad.h> //------------------- REMOVABLE?
 #include <GLFW/glfw3.h>
 
 class Renderer {

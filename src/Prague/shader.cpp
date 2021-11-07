@@ -12,8 +12,8 @@ using namespace std;
 // shader construction
 Shader::Shader(const char* V, const char* F) {
     // vertex and fragment strings
-    string vs = fileRead(V);
-    string fs = fileRead(F);
+    string vs = readFile(V);
+    string fs = readFile(F);
     // stack overflow be like:
     vector<char> vChars(vs.c_str(), vs.c_str() + vs.size() + 1u);
     vector<char> fChars(fs.c_str(), fs.c_str() + fs.size() + 1u);

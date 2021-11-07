@@ -99,3 +99,13 @@ bool isFile(std::string path) {
     }
     return 0;
 }
+
+// get file extension
+std::string fileExt(std::string& path) {
+    return path.substr(path.find_last_of(".") + 1);
+}
+
+// get file name (remove extension)
+std::string fileName(std::string& path) {
+    return path.substr(0, path.find_last_of("."));
+}
